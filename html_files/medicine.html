@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medicine Delivery | HealthCare+</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0d6efd;
+      --accent: #20c997;
+      --dark: #0f1724;
+      --light-bg: #f8faff;
+      --text: #1a1a2e;
+    }
+
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      line-height: 1.7; 
+      color: var(--text); 
+    }
+
+    .btn-custom { 
+      padding: 14px 38px; 
+      font-weight: 600; 
+      border-radius: 12px; 
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white; 
+      padding: 120px 0 100px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ''; 
+      position: absolute; 
+      width: 500px; 
+      height: 500px;
+      background: rgba(255,255,255,0.1); 
+      border-radius: 50%; 
+      top: -150px; 
+      right: -120px;
+    }
+    .hero h1 { font-size: 2.85rem; font-weight: 700; }
+
+    .feature-card, .how-card {
+      background: #fff; 
+      border: 1px solid #e8eef8; 
+      border-radius: 18px;
+      padding: 32px 24px; 
+      text-align: center;
+      height: 100%;
+      transition: all 0.35s ease;
+    }
+
+    .feature-card:hover, .how-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(40,167,69,0.15);
+    }
+
+    .feature-icon {
+      width: 74px; 
+      height: 74px; 
+      border-radius: 16px;
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      font-size: 2.2rem; 
+      margin: 0 auto 22px;
+      background: #e8f5e9; 
+      color: #2e7d32;
+    }
+
+    /* Premium Glider Toast */
+    .hc-toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 9999;
+      width: 460px;
+      background: #fff;
+      border-radius: 20px;
+      border: 0.5px solid #dde4f0;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      transform: translateX(120%);
+      opacity: 0;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+    }
+    .hc-toast.show { transform: translateX(0); opacity: 1; }
+    .hc-toast.hide { transform: translateX(120%); opacity: 0; }
+
+    .toast-progress {
+      height: 5px;
+      width: 100%;
+      transform-origin: left;
+    }
+    .toast-progress.medicine-bar { 
+      background: linear-gradient(90deg, #28a745, #20c997); 
+    }
+
+    .toast-inner { padding: 20px 22px 22px; }
+
+    .toast-header-row {
+      display: flex; 
+      align-items: center;
+      justify-content: space-between; 
+      margin-bottom: 14px;
+    }
+    .toast-badge {
+      display: inline-flex; 
+      align-items: center; 
+      gap: 7px;
+      font-size: 12.5px; 
+      font-weight: 600;
+      padding: 5px 14px; 
+      border-radius: 50px; 
+      letter-spacing: 0.2px;
+    }
+    .toast-badge.medicine { 
+      background: #e8f5e9; 
+      color: #2e7d32; 
+    }
+
+    .badge-dot {
+      width: 7px; 
+      height: 7px; 
+      border-radius: 50%;
+      display: inline-block; 
+      animation: blink 1.6s infinite;
+    }
+    .toast-badge.medicine .badge-dot { background: #2e7d32; }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.7); }
+    }
+
+    .toast-close {
+      background: none; 
+      border: none; 
+      cursor: pointer;
+      font-size: 20px; 
+      line-height: 1; 
+      color: #6c757d;
+      padding: 2px 7px; 
+      border-radius: 8px; 
+      transition: background 0.15s;
+    }
+    .toast-close:hover { background: #f1f3f5; }
+
+    .toast-title { 
+      font-size: 17px; 
+      font-weight: 600; 
+      color: #1a1a2e; 
+      margin-bottom: 4px; 
+    }
+    .toast-subtitle { 
+      font-size: 13px; 
+      color: #6c757d; 
+      margin-bottom: 16px; 
+    }
+
+    .toast-grid {
+      display: grid; 
+      grid-template-columns: 1fr 1fr;
+      gap: 10px; 
+      margin-bottom: 16px;
+    }
+    .t-cell { 
+      background: #f8faff; 
+      border-radius: 12px; 
+      padding: 11px 14px; 
+    }
+    .t-cell.span2 { grid-column: 1 / -1; }
+    .t-label {
+      font-size: 10.5px; 
+      text-transform: uppercase;
+      letter-spacing: 0.7px; 
+      color: #6c757d; 
+      margin-bottom: 4px;
+    }
+    .t-value { 
+      font-size: 13.5px; 
+      font-weight: 600; 
+      color: #1a1a2e; 
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-primary fs-4" href="index.html">
+      <i class="bi bi-heart-pulse-fill me-2"></i>HealthCare+
+    </a>
+    <a href="index.html" class="btn btn-outline-primary">← Back to Home</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero text-center">
+  <div class="container">
+    <h1>Medicine Delivery</h1>
+    <p class="lead mt-3">Get your medicines delivered safely to your doorstep.</p>
+    <button onclick="showOrderModal()" class="btn btn-success btn-custom mt-4 fs-5 px-5">
+      Order Medicines Now
+    </button>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-5" style="background:var(--light-bg);">
+  <div class="container">
+    <div class="text-center mb-5"><h2 class="fw-bold">Why Choose Us</h2></div>
+    <div class="row g-4">
+      <div class="col-md-4"><div class="feature-card"><div class="feature-icon"><i class="bi bi-truck"></i></div><h5>Fast Delivery</h5><p class="text-muted">Doorstep delivery in hours</p></div></div>
+      <div class="col-md-4"><div class="feature-card"><div class="feature-icon"><i class="bi bi-shield-check"></i></div><h5>Verified Medicines</h5><p class="text-muted">100% genuine & safe</p></div></div>
+      <div class="col-md-4"><div class="feature-card"><div class="feature-icon"><i class="bi bi-receipt"></i></div><h5>Easy Ordering</h5><p class="text-muted">Quick & secure process</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5 text-center" style="background:var(--dark);color:white;">
+  <div class="container">
+    <h3>Ready to Order?</h3>
+    <button onclick="showOrderModal()" class="btn btn-success btn-custom mt-4 fs-5 px-5">Order Now</button>
+  </div>
+</section>
+
+<footer class="bg-light py-4 text-center border-top">
+  <div class="container">
+    <p class="mb-0 text-muted">
+      © 2026 HealthCare+. All Rights Reserved. 
+      <a href="index.html" class="text-primary text-decoration-none ms-3">← Back to Home</a>
+    </p>
+  </div>
+</footer>
+
+<!-- ORDER MODAL -->
+<div class="modal fade" id="orderModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="fw-bold">Place Your Order</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="orderForm" novalidate>
+          <div class="mb-3">
+            <label class="form-label fw-medium">Full Name</label>
+            <input type="text" id="orderName" class="form-control" required>
+            <div class="invalid-feedback">Enter your name</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium">Phone</label>
+            <input type="tel" id="orderPhone" class="form-control" pattern="[0-9+\s\-]{10,14}" required>
+            <div class="invalid-feedback">Invalid phone number</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium">Email</label>
+            <input type="email" id="orderEmail" class="form-control" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required>
+            <div class="invalid-feedback">Invalid email address</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium">Do you have a prescription?</label>
+            <select id="orderPrescription" class="form-control" required>
+              <option value="">Select</option>
+              <option>Yes, I have prescription</option>
+              <option>No, I need consultation</option>
+            </select>
+            <div class="invalid-feedback">Please select an option</div>
+          </div>
+
+          <div class="text-center mt-3">
+            <button type="submit" class="btn btn-success btn-custom px-5">Place Order</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Premium Glider Toast -->
+<div class="hc-toast" id="hcToast">
+  <div class="toast-progress medicine-bar" id="toastProgress"></div>
+  <div class="toast-inner">
+    <div class="toast-header-row">
+      <span class="toast-badge medicine" id="tBadge">
+        <span class="badge-dot"></span>
+        Order Confirmed
+      </span>
+      <button class="toast-close" onclick="hideToast()">×</button>
+    </div>
+
+    <div class="toast-title" id="tTitle">Order Placed Successfully!</div>
+    <div class="toast-subtitle" id="tSubtitle">Our pharmacy team will contact you soon.</div>
+
+    <div class="toast-grid">
+      <div class="t-cell span2">
+        <div class="t-label">Customer</div>
+        <div class="t-value" id="tName">—</div>
+      </div>
+      <div class="t-cell span2">
+        <div class="t-label">Status</div>
+        <div class="t-value" id="tStatus">Processing for delivery</div>
+      </div>
+    </div>
+
+    <div class="toast-divider"></div>
+
+    <div class="toast-footer">
+      <div class="toast-sent">
+        <div class="sent-icon" style="background:#e8f5e9; color:#2e7d32; width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;">
+          <i class="bi bi-whatsapp"></i>
+        </div>
+        <span id="tSentTo">Order details sent via Email & WhatsApp</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let toastTimer = null;
+  const TOAST_DURATION = 10000;
+
+  function showOrderModal() {
+    const modal = new bootstrap.Modal(document.getElementById('orderModal'));
+    modal.show();
+  }
+
+  document.getElementById('orderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    this.classList.add('was-validated');
+    if (!this.checkValidity()) return;
+
+    const name = document.getElementById('orderName').value.trim();
+    const email = document.getElementById('orderEmail').value.trim();
+
+    const btn = this.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+
+    btn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Processing...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      bootstrap.Modal.getInstance(document.getElementById('orderModal')).hide();
+
+      showToast({
+        name: name
+      });
+
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      this.reset();
+      this.classList.remove('was-validated');
+    }, 1200);
+  });
+
+  function showToast(data) {
+    document.getElementById('tName').textContent = data.name;
+
+    const toast = document.getElementById('hcToast');
+    const bar = document.getElementById('toastProgress');
+
+    toast.classList.remove('hide');
+    void toast.offsetWidth;
+    toast.classList.add('show');
+
+    bar.style.transition = 'none';
+    bar.style.transform = 'scaleX(1)';
+    void bar.offsetWidth;
+    bar.style.transition = 'transform ' + (TOAST_DURATION / 1000) + 's linear';
+    bar.style.transform = 'scaleX(0)';
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, TOAST_DURATION);
+  }
+
+  function hideToast() {
+    const toast = document.getElementById('hcToast');
+    toast.classList.remove('show');
+    toast.classList.add('hide');
+    clearTimeout(toastTimer);
+  }
+</script>
+
+</body>
+</html>

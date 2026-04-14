@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mental Wellness | HealthCare+</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0d6efd;
+      --accent: #9c27b0;
+      --dark: #0f1724;
+      --light-bg: #f8faff;
+      --text: #1a1a2e;
+    }
+
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      line-height: 1.7; 
+      color: var(--text); 
+    }
+
+    .hero { 
+      background: linear-gradient(135deg, #7b1fa2, #9c27b0); 
+      color: white; 
+      padding: 120px 0 100px; 
+      position: relative; 
+      overflow: hidden; 
+    }
+    .hero::before {
+      content: ''; 
+      position: absolute; 
+      width: 500px; 
+      height: 500px;
+      background: rgba(255,255,255,0.1); 
+      border-radius: 50%; 
+      top: -150px; 
+      right: -120px;
+    }
+    .hero h1 { font-size: 2.85rem; font-weight: 700; line-height: 1.12; }
+
+    .feature-card, .how-card {
+      background: #fff; 
+      border: 1px solid #e8eef8; 
+      border-radius: 18px; 
+      padding: 32px 24px; 
+      text-align: center; 
+      height: 100%; 
+      transition: all 0.35s;
+    }
+    .feature-card:hover, .how-card:hover { 
+      transform: translateY(-8px); 
+      box-shadow: 0 20px 40px rgba(123,31,162,0.15); 
+    }
+
+    .feature-icon { 
+      width: 74px; 
+      height: 74px; 
+      border-radius: 16px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-size: 2.2rem; 
+      margin: 0 auto 22px; 
+      background: #f3e5f5; 
+      color: #7b1fa2; 
+    }
+
+    .btn-custom { 
+      padding: 14px 38px; 
+      font-weight: 600; 
+      border-radius: 12px; 
+    }
+
+    /* Premium Glider Toast */
+    .hc-toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 9999;
+      width: 460px;
+      background: #fff;
+      border-radius: 20px;
+      border: 0.5px solid #dde4f0;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      transform: translateX(120%);
+      opacity: 0;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+    }
+    .hc-toast.show { transform: translateX(0); opacity: 1; }
+    .hc-toast.hide { transform: translateX(120%); opacity: 0; }
+
+    .toast-progress {
+      height: 5px;
+      width: 100%;
+      transform-origin: left;
+    }
+    .toast-progress.mental-bar { 
+      background: linear-gradient(90deg, #7b1fa2, #9c27b0); 
+    }
+
+    .toast-inner { padding: 20px 22px 22px; }
+
+    .toast-header-row {
+      display: flex; 
+      align-items: center;
+      justify-content: space-between; 
+      margin-bottom: 14px;
+    }
+    .toast-badge {
+      display: inline-flex; 
+      align-items: center; 
+      gap: 7px;
+      font-size: 12.5px; 
+      font-weight: 600;
+      padding: 5px 14px; 
+      border-radius: 50px; 
+      letter-spacing: 0.2px;
+    }
+    .toast-badge.mental { 
+      background: #f3e5f5; 
+      color: #7b1fa2; 
+    }
+
+    .badge-dot {
+      width: 7px; height: 7px; 
+      border-radius: 50%;
+      display: inline-block; 
+      animation: blink 1.6s infinite;
+    }
+    .toast-badge.mental .badge-dot { background: #7b1fa2; }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.7); }
+    }
+
+    .toast-close {
+      background: none; border: none; cursor: pointer;
+      font-size: 20px; line-height: 1; color: #6c757d;
+      padding: 2px 7px; border-radius: 8px; 
+      transition: background 0.15s;
+    }
+    .toast-close:hover { background: #f1f3f5; }
+
+    .toast-title { 
+      font-size: 17px; font-weight: 600; color: #1a1a2e; margin-bottom: 4px; 
+    }
+    .toast-subtitle { 
+      font-size: 13px; color: #6c757d; margin-bottom: 16px; 
+    }
+
+    .toast-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; margin-bottom: 16px;
+    }
+    .t-cell { 
+      background: #f8faff; border-radius: 12px; padding: 11px 14px; 
+    }
+    .t-cell.span2 { grid-column: 1 / -1; }
+    .t-label {
+      font-size: 10.5px; text-transform: uppercase;
+      letter-spacing: 0.7px; color: #6c757d; margin-bottom: 4px;
+    }
+    .t-value { 
+      font-size: 13.5px; font-weight: 600; color: #1a1a2e; 
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-primary fs-4" href="index.html">
+      <i class="bi bi-heart-pulse-fill me-2"></i>HealthCare+
+    </a>
+    <a href="index.html" class="btn btn-outline-primary">← Back to Home</a>
+  </div>
+</nav>
+
+<section class="hero text-center">
+  <div class="container">
+    <h1>Mental Wellness</h1>
+    <p class="lead mt-3">Compassionate care for your mind in a safe and confidential space.</p>
+    <button onclick="showMentalModal()" class="btn btn-primary btn-custom mt-4 fs-5 px-5">Book a Session Now</button>
+  </div>
+</section>
+
+<section class="py-5" style="background: var(--light-bg);">
+  <div class="container">
+    <div class="text-center mb-5"><h2 class="fw-bold">Support for Your Mental Health</h2></div>
+    <div class="row g-4">
+      <div class="col-md-4"><div class="feature-card"><div class="feature-icon"><i class="bi bi-person-video"></i></div><h5>One-on-One Therapy</h5><p class="text-muted">With licensed counselors</p></div></div>
+      <div class="col-md-4"><div class="feature-card"><div class="feature-icon"><i class="bi bi-cloud-sun"></i></div><h5>Stress & Anxiety Management</h5><p class="text-muted">Practical tools and guidance</p></div></div>
+      <div class="col-md-4"><div class="feature-card"><div class="feature-icon"><i class="bi bi-lock"></i></div><h5>100% Confidential</h5><p class="text-muted">Your privacy is our priority</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5"><h2 class="fw-bold">How It Works</h2><p class="text-muted">Simple 3 steps</p></div>
+    <div class="row g-5 text-center">
+      <div class="col-md-4"><div class="how-card"><div style="width:56px;height:56px;background:#7b1fa2;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.5rem;margin:0 auto 20px;">1</div><h5>Book Session</h5><p class="text-muted">Choose convenient time</p></div></div>
+      <div class="col-md-4"><div class="how-card"><div style="width:56px;height:56px;background:#7b1fa2;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.5rem;margin:0 auto 20px;">2</div><h5>Join Securely</h5><p class="text-muted">Video or audio session</p></div></div>
+      <div class="col-md-4"><div class="how-card"><div style="width:56px;height:56px;background:#7b1fa2;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.5rem;margin:0 auto 20px;">3</div><h5>Feel Better</h5><p class="text-muted">Get tools and ongoing support</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 text-center" style="background:var(--dark);color:white;">
+  <div class="container">
+    <h3>Ready to Take Care of Your Mental Health?</h3>
+    <button onclick="showMentalModal()" class="btn btn-primary btn-custom mt-4 fs-5 px-5">Book a Session</button>
+  </div>
+</section>
+
+<footer class="bg-light py-4 text-center border-top">
+  <div class="container">
+    <p class="mb-0 text-muted">
+      © 2026 HealthCare+. All Rights Reserved. 
+      <a href="index.html" class="text-primary text-decoration-none ms-3">← Back to Home</a>
+    </p>
+  </div>
+</footer>
+
+<!-- Mental Wellness Modal -->
+<div class="modal fade" id="mentalModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Book Your Mental Wellness Session</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="mentalForm" novalidate>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label fw-medium">Full Name</label>
+              <input type="text" id="mentalName" class="form-control" required>
+              <div class="invalid-feedback">Please enter your name.</div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-medium">Phone Number</label>
+              <input type="tel" id="mentalPhone" class="form-control" placeholder="+91" required>
+              <div class="invalid-feedback">Please enter a valid phone number.</div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-medium">Email Address</label>
+              <input type="email" id="mentalEmail" class="form-control" placeholder="your@email.com" required>
+              <div class="invalid-feedback">Please enter a valid email.</div>
+            </div>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label class="form-label fw-medium">What are you struggling with right now?</label>
+            <select id="mentalConcern" class="form-control" required>
+              <option value="">Select your main concern</option>
+              <option>Anxiety or overthinking</option>
+              <option>Stress or burnout</option>
+              <option>Feeling low / sad / depressed</option>
+              <option>Sleep issues or insomnia</option>
+              <option>Relationship / family issues</option>
+              <option>Anger or irritability</option>
+              <option>Other</option>
+            </select>
+            <div class="invalid-feedback">Please select a concern.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium">How urgent is this for you?</label>
+            <select id="mentalUrgency" class="form-control" required>
+              <option value="">Select urgency</option>
+              <option>I need help soon (within 2-3 days)</option>
+              <option>Moderate urgency (this week)</option>
+              <option>Not urgent, just want to start</option>
+            </select>
+            <div class="invalid-feedback">Please select urgency level.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium">Preferred session type</label>
+            <select id="mentalType" class="form-control" required>
+              <option value="">Select type</option>
+              <option>Video Call (face-to-face)</option>
+              <option>Audio Call only</option>
+            </select>
+            <div class="invalid-feedback">Please select session type.</div>
+          </div>
+
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-custom px-5">Book Session</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Premium Glider Toast -->
+<div class="hc-toast" id="hcToast">
+  <div class="toast-progress mental-bar" id="toastProgress"></div>
+  <div class="toast-inner">
+    <div class="toast-header-row">
+      <span class="toast-badge mental" id="tBadge">
+        <span class="badge-dot"></span>
+        Session Request Confirmed
+      </span>
+      <button class="toast-close" onclick="hideToast()">×</button>
+    </div>
+
+    <div class="toast-title" id="tTitle">Thank You for Reaching Out</div>
+    <div class="toast-subtitle" id="tSubtitle">Your request has been received.</div>
+
+    <div class="toast-grid">
+      <div class="t-cell span2">
+        <div class="t-label">Name</div>
+        <div class="t-value" id="tName">—</div>
+      </div>
+      <div class="t-cell span2">
+        <div class="t-label">Concern</div>
+        <div class="t-value" id="tConcern">—</div>
+      </div>
+    </div>
+
+    <div class="toast-divider"></div>
+
+    <div class="toast-footer">
+      <div class="toast-sent">
+        <div class="sent-icon" style="background:#f3e5f5; color:#7b1fa2; width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;">
+          <i class="bi bi-envelope-fill"></i>
+        </div>
+        <span id="tSentTo">Confirmation sent to your email & phone</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let toastTimer = null;
+  const TOAST_DURATION = 10000;
+
+  function showMentalModal() {
+    const modal = new bootstrap.Modal(document.getElementById('mentalModal'));
+    modal.show();
+  }
+
+  document.getElementById('mentalForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    this.classList.add('was-validated');
+    if (!this.checkValidity()) return;
+
+    const name = document.getElementById('mentalName').value.trim();
+    const email = document.getElementById('mentalEmail').value.trim();
+    const concern = document.getElementById('mentalConcern').value || "Mental Wellness Session";
+
+    const btn = this.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+
+    btn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Sending Request...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      bootstrap.Modal.getInstance(document.getElementById('mentalModal')).hide();
+
+      // Show glider toast
+      showToast({
+        name: name,
+        concern: concern
+      });
+
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      this.reset();
+      this.classList.remove('was-validated');
+    }, 1400);
+  });
+
+  function showToast(data) {
+    document.getElementById('tName').textContent = data.name;
+    document.getElementById('tConcern').textContent = data.concern;
+
+    const toast = document.getElementById('hcToast');
+    const bar = document.getElementById('toastProgress');
+
+    toast.classList.remove('hide');
+    void toast.offsetWidth;
+    toast.classList.add('show');
+
+    bar.style.transition = 'none';
+    bar.style.transform = 'scaleX(1)';
+    void bar.offsetWidth;
+    bar.style.transition = 'transform ' + (TOAST_DURATION / 1000) + 's linear';
+    bar.style.transform = 'scaleX(0)';
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, TOAST_DURATION);
+  }
+
+  function hideToast() {
+    const toast = document.getElementById('hcToast');
+    toast.classList.remove('show');
+    toast.classList.add('hide');
+    clearTimeout(toastTimer);
+  }
+</script>
+</body>
+</html>
