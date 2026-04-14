@@ -1,0 +1,1 @@
+/* Emergency page has no custom JavaScript yet. */
