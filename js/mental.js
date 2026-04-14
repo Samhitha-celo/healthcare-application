@@ -1,61 +1,66 @@
 let toastTimer = null;
-const TOAST_DURATION = 10000;
+  const TOAST_DURATION = 10000;
 
-function showMentalModal() {
-  const modal = new bootstrap.Modal(document.getElementById('mentalModal'));
-  modal.show();
-}
+  function showMentalModal() {
+    const modal = new bootstrap.Modal(document.getElementById('mentalModal'));
+    modal.show();
+  }
 
-document.getElementById('mentalForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  this.classList.add('was-validated');
-  if (!this.checkValidity()) return;
+  document.getElementById('mentalForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    this.classList.add('was-validated');
+    if (!this.checkValidity()) return;
 
-  const name = document.getElementById('mentalName').value.trim();
-  const email = document.getElementById('mentalEmail').value.trim();
-  const concern = document.getElementById('mentalConcern').value || 'Mental Wellness Session';
+    const name = document.getElementById('mentalName').value.trim();
+    const email = document.getElementById('mentalEmail').value.trim();
+    const concern = document.getElementById('mentalConcern').value || "Mental Wellness Session";
 
-  const btn = this.querySelector('button[type="submit"]');
-  const originalText = btn.innerHTML;
+    const btn = this.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
 
-  btn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Sending Request...';
-  btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Sending Request...';
+    btn.disabled = true;
 
-  setTimeout(() => {
-    bootstrap.Modal.getInstance(document.getElementById('mentalModal')).hide();
-    showToast({ name, concern });
+    setTimeout(() => {
+      bootstrap.Modal.getInstance(document.getElementById('mentalModal')).hide();
 
-    btn.innerHTML = originalText;
-    btn.disabled = false;
-    this.reset();
-    this.classList.remove('was-validated');
-  }, 1400);
-});
+      // Show glider toast
+      showToast({
+        name: name,
+        concern: concern
+      });
 
-function showToast(data) {
-  document.getElementById('tName').textContent = data.name;
-  document.getElementById('tConcern').textContent = data.concern;
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      this.reset();
+      this.classList.remove('was-validated');
+    }, 1400);
+  });
 
-  const toast = document.getElementById('hcToast');
-  const bar = document.getElementById('toastProgress');
+  function showToast(data) {
+    document.getElementById('tName').textContent = data.name;
+    document.getElementById('tConcern').textContent = data.concern;
 
-  toast.classList.remove('hide');
-  void toast.offsetWidth;
-  toast.classList.add('show');
+    const toast = document.getElementById('hcToast');
+    const bar = document.getElementById('toastProgress');
 
-  bar.style.transition = 'none';
-  bar.style.transform = 'scaleX(1)';
-  void bar.offsetWidth;
-  bar.style.transition = 'transform ' + (TOAST_DURATION / 1000) + 's linear';
-  bar.style.transform = 'scaleX(0)';
+    toast.classList.remove('hide');
+    void toast.offsetWidth;
+    toast.classList.add('show');
 
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(hideToast, TOAST_DURATION);
-}
+    bar.style.transition = 'none';
+    bar.style.transform = 'scaleX(1)';
+    void bar.offsetWidth;
+    bar.style.transition = 'transform ' + (TOAST_DURATION / 1000) + 's linear';
+    bar.style.transform = 'scaleX(0)';
 
-function hideToast() {
-  const toast = document.getElementById('hcToast');
-  toast.classList.remove('show');
-  toast.classList.add('hide');
-  clearTimeout(toastTimer);
-}
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, TOAST_DURATION);
+  }
+
+  function hideToast() {
+    const toast = document.getElementById('hcToast');
+    toast.classList.remove('show');
+    toast.classList.add('hide');
+    clearTimeout(toastTimer);
+  }
